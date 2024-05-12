@@ -8,12 +8,12 @@ part 'upload_picture_event.dart';
 part 'upload_picture_state.dart';
 
 class UploadPictureBloc extends Bloc<UploadPictureEvent, UploadPictureState> {
-  HotelRepo pizzaRepo;
+  HotelRepo hotelRepo;
 
-  UploadPictureBloc(this.pizzaRepo) : super(UploadPictureLoading()) {
+  UploadPictureBloc(this.hotelRepo) : super(UploadPictureLoading()) {
     on<UploadPicture>((event, emit) async {
       try {
-        String url = await pizzaRepo.sendImage(event.file, event.name);
+        String url = await hotelRepo.sendImage(event.file, event.name);
         emit(UploadPictureSuccess(url));
       } catch (e) {
         emit(UploadPictureFailure());

@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hotel_booking_admin/src/modules/create_hotel/blocs/create_hotel_bloc/create_hotel_bloc.dart';
+import 'package:hotel_booking_admin/src/modules/create_hotel/blocs/upload_picture_bloc/upload_picture_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/create_pizza_bloc/create_pizza_bloc.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/upload_picture_bloc/upload_picture_bloc.dart';
 import 'package:hotel_repository/hotel_repository.dart';
 import '../../../components/my_text_field.dart';
 import '../components/macro.dart';
 import 'dart:html' as html;
 
-class CreatePizzaScreen extends StatefulWidget {
-  const CreatePizzaScreen({super.key});
+class CreateHotelScreen extends StatefulWidget {
+  const CreateHotelScreen({super.key});
 
   @override
-  State<CreatePizzaScreen> createState() => _CreatePizzaScreenState();
+  State<CreateHotelScreen> createState() => _CreateHotelScreenState();
 }
 
-class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
+class _CreateHotelScreenState extends State<CreateHotelScreen> {
   final nameController = TextEditingController();
   final addressController = TextEditingController();
   final priceController = TextEditingController();
@@ -31,25 +31,25 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
   final peopleController = TextEditingController();
   bool creationRequired = false;
   String? _errorMsg;
-  late Hotel pizza;
+  late Hotel hotel;
 
   @override
   void initState() {
-    pizza = Hotel.empty;
+    hotel = Hotel.empty;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CreatePizzaBloc, CreatePizzaState>(
+    return BlocListener<CreateHotelBloc, CreateHotelState>(
       listener: (context, state) {
-        if (state is CreatePizzaSuccess) {
+        if (state is CreateHotelSuccess) {
           setState(() {
             creationRequired = false;
             context.go('/');
           });
           context.go('/');
-        } else if (state is CreatePizzaLoading) {
+        } else if (state is CreateHotelLoading) {
           setState(() {
             creationRequired = true;
           });
@@ -60,7 +60,7 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
           if (state is UploadPictureLoading) {
           } else if (state is UploadPictureSuccess) {
             setState(() {
-              pizza.imagePath = state.url;
+              hotel.imagePath = state.url;
             });
           }
         },
@@ -91,14 +91,14 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
                             await image.readAsBytes(), basename(image.path)));
                       }
                     },
-                    child: pizza.imagePath.startsWith(('http'))
+                    child: hotel.imagePath.startsWith(('http'))
                         ? Container(
                             width: 400,
                             height: 400,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 image: DecorationImage(
-                                    image: NetworkImage(pizza.imagePath),
+                                    image: NetworkImage(hotel.imagePath),
                                     fit: BoxFit.cover)))
                         : Ink(
                             width: 400,
@@ -184,10 +184,10 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
                                 width: 10,
                               ),
                               Checkbox(
-                                  value: pizza.isSelected,
+                                  value: hotel.isSelected,
                                   onChanged: (value) {
                                     setState(() {
-                                      pizza.isSelected = value!;
+                                      hotel.isSelected = value!;
                                     });
                                   })
                             ],
@@ -280,25 +280,25 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() {
-                                    pizza.titleTxt = nameController.text;
-                                    pizza.subTxt = addressController.text;
-                                    pizza.perNight =
+                                    hotel.titleTxt = nameController.text;
+                                    hotel.subTxt = addressController.text;
+                                    hotel.perNight =
                                         int.parse(priceController.text);
-                                    pizza.dist =
+                                    hotel.dist =
                                         double.parse(distController.text);
-                                    pizza.rating =
+                                    hotel.rating =
                                         double.parse(ratingController.text);
-                                    pizza.reviews =
+                                    hotel.reviews =
                                         int.parse(reviewsController.text);
-                                    pizza.room?.numberRoom =
+                                    hotel.room?.numberRoom =
                                         int.parse(numberRoomController.text);
-                                    pizza.room?.people =
+                                    hotel.room?.people =
                                         int.parse(peopleController.text);
                                   });
-                                  print(pizza.toString());
+                                  print(hotel.toString());
                                   context
-                                      .read<CreatePizzaBloc>()
-                                      .add(CreatePizza(pizza));
+                                      .read<CreateHotelBloc>()
+                                      .add(CreateHotel(hotel));
                                 }
                               },
                               style: TextButton.styleFrom(
@@ -312,7 +312,7 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 25, vertical: 5),
                                 child: Text(
-                                  'Create Pizza',
+                                  'Create Hotel',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,

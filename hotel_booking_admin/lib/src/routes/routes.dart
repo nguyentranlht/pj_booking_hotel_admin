@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pizza_app_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/create_pizza_bloc/create_pizza_bloc.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/upload_picture_bloc/upload_picture_bloc.dart';
+import 'package:hotel_booking_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:hotel_booking_admin/src/modules/create_hotel/blocs/upload_picture_bloc/upload_picture_bloc.dart';
 import 'package:hotel_repository/hotel_repository.dart';
 import '../modules/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
 import '../modules/auth/views/login_screen.dart';
 import '../modules/base/views/base_screen.dart';
-import '../modules/create_pizza/views/create_pizza_screen.dart';
+
+import '../modules/create_hotel/blocs/create_hotel_bloc/create_hotel_bloc.dart';
+import '../modules/create_hotel/views/create_hotel_screen.dart';
 import '../modules/home/views/home_screen.dart';
 import '../modules/splash/views/splash_screen.dart';
 
@@ -73,12 +74,12 @@ GoRouter router (AuthenticationBloc authBloc) {
                   ),
                 ),
                 BlocProvider(
-                  create: (context) => CreatePizzaBloc(
+                  create: (context) => CreateHotelBloc(
                     FirebaseHotelRepo()
                   ),
                 )
               ], 
-              child: const CreatePizzaScreen()),
+              child: const CreateHotelScreen()),
             )
         ]
       )
