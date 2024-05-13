@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pizza_app_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/create_pizza_bloc/create_pizza_bloc.dart';
-import 'package:pizza_app_admin/src/modules/create_pizza/blocs/upload_picture_bloc/upload_picture_bloc.dart';
+import 'package:hotel_booking_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:hotel_booking_admin/src/modules/create_pizza/blocs/create_pizza_bloc/create_pizza_bloc.dart';
+import 'package:hotel_booking_admin/src/modules/create_pizza/blocs/upload_picture_bloc/upload_picture_bloc.dart';
 import 'package:hotel_repository/hotel_repository.dart';
 import '../modules/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
 import '../modules/auth/views/login_screen.dart';

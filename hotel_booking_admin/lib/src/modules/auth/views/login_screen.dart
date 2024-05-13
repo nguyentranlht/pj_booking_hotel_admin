@@ -6,143 +6,190 @@ import '../../../components/my_text_field.dart';
 import '../blocs/sing_in_bloc/sign_in_bloc.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-	final passwordController = TextEditingController();
+  final passwordController = TextEditingController();
   final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-	bool signInRequired = false;
-	IconData iconPassword = CupertinoIcons.eye_fill;
-	bool obscurePassword = true;
-	String? _errorMsg;
-	
+  bool signInRequired = false;
+  IconData iconPassword = Icons.visibility;
+  bool obscurePassword = true;
+  String? _errorMsg;
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SignInBloc, SignInState>(
-			listener: (context, state) {
-				if(state is SignInSuccess) {
-					setState(() {
-					  signInRequired = false;
-					});
-          context.go('/');
-				} else if(state is SignInProcess) {
-					setState(() {
-					  signInRequired = true;
-					});
-				} else if(state is SignInFailure) {
-					setState(() {
-					  signInRequired = false;
-						_errorMsg = 'Invalid email or password';
-					});
-				}
-			},
-			child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: MyTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obscureText: false,
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: const Icon(CupertinoIcons.mail_solid),
-                    errorMsg: _errorMsg,
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'Please fill in this field';
-                      } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$').hasMatch(val)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    }
-                  )
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: obscurePassword,
-                    keyboardType: TextInputType.visiblePassword,
-                    prefixIcon: const Icon(CupertinoIcons.lock_fill),
-                    errorMsg: _errorMsg,
-                    validator: (val) {
-                      if (val!.isEmpty) {
-                        return 'Please fill in this field';
-                      } else if (!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$').hasMatch(val)) {
-                        return 'Please enter a valid password';
-                      }
-                      return null;
-                    },
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                          if(obscurePassword) {
-                            iconPassword = CupertinoIcons.eye_fill;
-                          } else {
-                            iconPassword = CupertinoIcons.eye_slash_fill;
-                          }
-                        });
-                      },
-                      icon: Icon(iconPassword),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                !signInRequired
-                  ? SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<SignInBloc>().add(SignInRequired(
-                              emailController.text,
-                              passwordController.text)
-                            );
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          elevation: 3.0,
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(60)
-                          )
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                          child: Text(
-                            'Sign In',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600
-                            ),
-                          ),
-                        )
-                      ),
-                    )
-                : const CircularProgressIndicator(),
-              ],
-            )
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            "Welcome Back",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-		);
+      body: BlocListener<SignInBloc, SignInState>(
+        listener: (context, state) {
+          if (state is SignInSuccess) {
+            setState(() {
+              signInRequired = false;
+            });
+            context.go('/');
+          } else if (state is SignInProcess) {
+            setState(() {
+              signInRequired = true;
+            });
+          } else if (state is SignInFailure) {
+            setState(() {
+              signInRequired = false;
+              _errorMsg = 'Invalid email or password';
+            });
+          }
+        },
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.mail_outline),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      style: TextStyle(fontSize: 16),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please fill in this field';
+                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$').hasMatch(val)) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              obscurePassword = !obscurePassword;
+                              if (obscurePassword) {
+                                iconPassword = Icons.visibility;
+                              } else {
+                                iconPassword = Icons.visibility_off;
+                              }
+                            });
+                          },
+                          icon: Icon(iconPassword),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      obscureText: obscurePassword,
+                      style: TextStyle(fontSize: 16),
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please fill in this field';
+                        } else if (!RegExp(
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                            .hasMatch(val)) {
+                          return 'Please enter a valid password';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    signInRequired
+                        ? CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<SignInBloc>().add(
+                                      SignInRequired(
+                                        emailController.text,
+                                        passwordController.text,
+                                      ),
+                                    );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: Colors.black,
+                            ),
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

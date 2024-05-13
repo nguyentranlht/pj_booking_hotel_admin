@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pizza_app_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:hotel_booking_admin/src/blocs/authentication_bloc/authentication_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

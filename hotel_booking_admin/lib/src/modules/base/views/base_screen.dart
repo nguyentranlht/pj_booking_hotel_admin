@@ -42,7 +42,7 @@ class _BaseScreenState extends State<BaseScreen> {
                             context.go('/home');
                           },
                           child: const Text(
-                            'Pizza Admin',
+                            'Hotel Admin',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20
