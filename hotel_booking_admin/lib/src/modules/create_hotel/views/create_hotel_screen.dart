@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hotel_booking_admin/src/modules/create_hotel/blocs/create_hotel_bloc/create_hotel_bloc.dart';
 import 'package:hotel_booking_admin/src/modules/create_hotel/blocs/upload_picture_bloc/upload_picture_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:hotel_repository/hotel_repository.dart';
 import '../../../components/my_text_field.dart';
-import '../components/macro.dart';
 import 'dart:html' as html;
 
 class CreateHotelScreen extends StatefulWidget {
@@ -290,9 +288,9 @@ class _CreateHotelScreenState extends State<CreateHotelScreen> {
                                         double.parse(ratingController.text);
                                     hotel.reviews =
                                         int.parse(reviewsController.text);
-                                    hotel.room?.numberRoom =
+                                    hotel.roomData.numberRoom =
                                         int.parse(numberRoomController.text);
-                                    hotel.room?.people =
+                                    hotel.roomData.people =
                                         int.parse(peopleController.text);
                                   });
                                   print(hotel.toString());
